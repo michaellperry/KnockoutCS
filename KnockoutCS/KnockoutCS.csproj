@@ -78,6 +78,23 @@
     </Compile>
     <Compile Include="Library1\BaseViewModel.cs" />
     <Compile Include="Library1\Computed.cs" />
+    <Compile Include="Library\Impl\ClassInstance.cs" />
+    <Compile Include="Library\Impl\ClassProperty.cs" />
+    <Compile Include="Library\Impl\CollectionItem.cs" />
+    <Compile Include="Library\Impl\DelegatedPropertyInfo.cs" />
+    <Compile Include="Library\Impl\DelegatedType.cs" />
+    <Compile Include="Library\Impl\IObjectInstance.cs" />
+    <Compile Include="Library\Impl\Monad.cs" />
+    <Compile Include="Library\Impl\NotificationGate.cs" />
+    <Compile Include="Library\Impl\ObjectInstance.cs" />
+    <Compile Include="Library\Impl\ObjectProperty.cs" />
+    <Compile Include="Library\Impl\ObjectPropertyAtom.cs" />
+    <Compile Include="Library\Impl\ObjectPropertyAtomNative.cs" />
+    <Compile Include="Library\Impl\ObjectPropertyAtomObject.cs" />
+    <Compile Include="Library\Impl\ObjectPropertyCollection.cs" />
+    <Compile Include="Library\Impl\ObjectPropertyCollectionNative.cs" />
+    <Compile Include="Library\Impl\ObjectPropertyCollectionObject.cs" />
+    <Compile Include="Library\Impl\Observable.cs" />
     <Compile Include="Library\KO.cs" />
     <Compile Include="Library1\Observable.cs" />
     <Compile Include="MainPage.xaml.cs">

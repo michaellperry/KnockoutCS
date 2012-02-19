@@ -9,7 +9,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Animation;
 using System.Windows.Shapes;
-using KnockoutCS.Library1;
+using KnockoutCS.Library;
 using UpdateControls.XAML;
 
 namespace KnockoutCS
