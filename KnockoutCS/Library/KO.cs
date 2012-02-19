@@ -25,5 +25,10 @@ namespace KnockoutCS.Library1
         {
             throw new NotImplementedException();
         }
+
+        public static object ApplyBindings(object viewModelTemplate)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
