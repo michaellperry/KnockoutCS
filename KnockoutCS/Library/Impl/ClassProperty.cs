@@ -36,19 +36,21 @@ namespace KnockoutCS.Library.Impl
             typeof(INotifyCollectionChanged)
         };
 
+        private bool _isModelProperty;
         private PropertyInfo _propertyInfo;
         private Type _objectInstanceType;
         private Func<IObjectInstance, ObjectProperty> _makeObjectProperty;
 
-        public ClassProperty(PropertyInfo property, Type objectInstanceType)
+        public ClassProperty(bool isModelProperty, PropertyInfo property, Type objectInstanceType)
             : base(property, GetValueType(property.PropertyType))
         {
+            _isModelProperty = isModelProperty;
             _propertyInfo = property;
             _objectInstanceType = objectInstanceType;
 
             // Determine which type of object property to create.
             Type propertyType = property.PropertyType;
-			if (IsPrimitive(propertyType))
+            if (IsPrimitive(propertyType))
             {
                 _makeObjectProperty = objectInstance =>
                     new ObjectPropertyAtomNative(objectInstance, this);
@@ -92,16 +94,30 @@ namespace KnockoutCS.Library.Impl
             return _makeObjectProperty(objectInstance);
         }
 
-        public object GetObjectValue(object wrappedObject)
+        public object GetObjectValue(dynamic model, object viewModel)
         {
-            Monad monad = (Monad)_propertyInfo.GetValue(wrappedObject, null);
-            return monad.Get();
+            if (_isModelProperty)
+            {
+                return model.Get(_propertyInfo.Name);
+            }
+            else
+            {
+                Monad monad = (Monad)_propertyInfo.GetValue(viewModel, null);
+                return monad.Get();
+            }
         }
 
-		public void SetObjectValue(object wrappedObject, object value)
+		public void SetObjectValue(dynamic model, object viewModel, object value)
 		{
-            Monad monad = (Monad)_propertyInfo.GetValue(wrappedObject, null);
-            monad.Set(value);
+            if (_isModelProperty)
+            {
+                model.Set(_propertyInfo.Name, value);
+            }
+            else
+            {
+                Monad monad = (Monad)_propertyInfo.GetValue(viewModel, null);
+                monad.Set(value);
+            }
 		}
 
         protected override object GetValue(object obj)

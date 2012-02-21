@@ -1,55 +1,56 @@
 ﻿using System.Collections.Generic;
 using System.Dynamic;
-using UpdateControls;
 using System.Reflection;
 
 namespace KnockoutCS.Library.Impl
 {
     public class Observable<T> : DynamicObject
     {
-        private T _model;
-        private Dictionary<string, Independent> _independentByPropertyName = new Dictionary<string, Independent>();
+        private Dictionary<string, ObservableProperty<T>> _propertyByName = new Dictionary<string, ObservableProperty<T>>();
         
         public Observable(T model)
         {
-            _model = model;
+            foreach (PropertyInfo property in model.GetType().GetProperties())
+                _propertyByName.Add(property.Name, new ObservableProperty<T>(model, property));
+        }
+
+        public object Get(string propertyName)
+        {
+            return _propertyByName[propertyName].Get();
+        }
+
+        public void Set(string propertyName, object value)
+        {
+            _propertyByName[propertyName].Set(value);
         }
 
         public override bool TryGetMember(GetMemberBinder binder, out object result)
         {
-            Independent independent = GetIndependentByPropertyName(binder.Name);
-            PropertyInfo property = GetPropertyByPropertyName(binder.Name);
-
-            independent.OnGet();
-            result = property.GetValue(_model, null);
-            return true;
+            ObservableProperty<T> property;
+            if (_propertyByName.TryGetValue(binder.Name, out property))
+            {
+                result = property.Get();
+                return true;
+            }
+            else
+            {
+                result = null;
+                return false;
+            }
         }
 
         public override bool TrySetMember(SetMemberBinder binder, object value)
         {
-            Independent independent = GetIndependentByPropertyName(binder.Name);
-            PropertyInfo property = GetPropertyByPropertyName(binder.Name);
-
-            independent.OnSet();
-            property.SetValue(_model, value, null);
-            return true;
-        }
-
-        private Independent GetIndependentByPropertyName(string propertyName)
-        {
-            Independent independent;
-            if (!_independentByPropertyName.TryGetValue(propertyName, out independent))
+            ObservableProperty<T> property;
+            if (_propertyByName.TryGetValue(binder.Name, out property))
             {
-                independent = new Independent();
-                _independentByPropertyName.Add(propertyName, independent);
+                property.Set(value);
+                return true;
             }
-            return independent;
-        }
-
-        private PropertyInfo GetPropertyByPropertyName(string propertyName)
-        {
-            PropertyInfo property = _model.GetType().GetProperty(propertyName);
-            return property;
+            else
+            {
+                return false;
+            }
         }
     }
 }

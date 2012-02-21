@@ -93,6 +93,7 @@
     <Compile Include="Library\Impl\ObjectPropertyCollectionNative.cs" />
     <Compile Include="Library\Impl\ObjectPropertyCollectionObject.cs" />
     <Compile Include="Library\Impl\Observable.cs" />
+    <Compile Include="Library\Impl\ObservableProperty.cs" />
     <Compile Include="Library\KO.cs" />
     <Compile Include="MainPage.xaml.cs">
       <DependentUpon>MainPage.xaml</DependentUpon>

@@ -18,20 +18,27 @@ namespace KnockoutCS.Library.Impl
 {
     public class ClassInstance : DelegatedType
     {
-        private Type _wrappedType;
+        private Type _modelType;
+        private Type _viewModelType;
         private Type _objectInstanceType;
         private List<ClassProperty> _classProperties;
 
-        public ClassInstance(Type wrappedType, Type objectInstanceType)
-            : base(wrappedType)
+        public ClassInstance(Type modelType, Type viewModelType, Type objectInstanceType)
+            : base(modelType, viewModelType)
         {
-            _wrappedType = wrappedType;
+            _modelType = modelType;
+            _viewModelType = viewModelType;
             _objectInstanceType = objectInstanceType;
 
             // Create a wrapper for each non-collection property.
-            _classProperties = _wrappedType
-                .GetProperties()
-                .Select(p => new ClassProperty(p, objectInstanceType))
+            PropertyInfo[] viewModelProperties = _viewModelType.GetProperties();
+            _classProperties = viewModelProperties
+                .Select(p => new ClassProperty(false, p, objectInstanceType))
+                .Union(_modelType
+                    .GetProperties()
+                    .Where(modelProperty => !viewModelProperties.Any(viewModelProperty =>
+                        viewModelProperty.Name == modelProperty.Name))
+                    .Select(p => new ClassProperty(true, p, objectInstanceType)))
                 .ToList();
         }
 
@@ -42,12 +49,12 @@ namespace KnockoutCS.Library.Impl
 
         public override string ToString()
         {
-            return _wrappedType.Name;
+            return "KO View Model for " + _modelType.Name;
         }
 
-        protected override PropertyInfo DelegatePropertyInfo(PropertyInfo rawPropertyInfo)
+        protected override PropertyInfo DelegatePropertyInfo(PropertyInfo rawPropertyInfo, bool isModelProperty)
         {
-            return new ClassProperty(rawPropertyInfo, _objectInstanceType);
+            return new ClassProperty(isModelProperty, rawPropertyInfo, _objectInstanceType);
         }
     }
 }

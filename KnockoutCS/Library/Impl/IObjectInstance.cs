@@ -17,7 +17,8 @@ namespace KnockoutCS.Library.Impl
     public interface IObjectInstance
     {
         ClassInstance ClassInstance { get; }
-        object WrappedObject { get; }
+        dynamic Model { get; }
+        object ViewModel { get; }
         Dispatcher Dispatcher { get; }
         ObjectProperty LookupProperty(ClassProperty classProperty);
         void FirePropertyChanged(string name);

@@ -35,12 +35,12 @@ namespace KnockoutCS.Library.Impl
 
         public override string ToString()
         {
-            return String.Format("{0}({1})", ClassProperty, ObjectInstance.WrappedObject);
+            return String.Format("{0}({1})", ClassProperty, ObjectInstance.ViewModel);
         }
 
         protected object WrapObject(object value)
         {
-            return typeof(ObjectInstance<>)
+            return typeof(ObjectInstance<,>)
 				.MakeGenericType(value.GetType())
 				.GetConstructor(new Type[] { typeof(object), typeof(Dispatcher) })
 				.Invoke(new object[] { value, ObjectInstance.Dispatcher });

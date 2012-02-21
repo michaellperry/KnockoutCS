@@ -23,15 +23,15 @@ namespace KnockoutCS.Library
             return new Monad(computation, inverse);
         }
 
-        public static object ApplyBindings(object viewModel)
+        public static object ApplyBindings<TModel>(dynamic model, object viewModel)
         {
             if (viewModel == null)
                 return null;
-            IObjectInstance root = (IObjectInstance)typeof(ObjectInstance<>)
-                .MakeGenericType(viewModel.GetType())
+            IObjectInstance root = (IObjectInstance)typeof(ObjectInstance<,>)
+                .MakeGenericType(typeof(TModel), viewModel.GetType())
                 .GetConstructors()
                 .Single()
-                .Invoke(new object[] { viewModel, Deployment.Current.Dispatcher });
+                .Invoke(new object[] { model, viewModel, Deployment.Current.Dispatcher });
             return root;
         }
     }

@@ -40,7 +40,7 @@ namespace KnockoutCS.Library.Impl
         private void OnUpdateCollection()
         {
             // Get the source collection from the wrapped object.
-            IEnumerable source = ClassProperty.GetObjectValue(ObjectInstance.WrappedObject) as IEnumerable;
+            IEnumerable source = ClassProperty.GetObjectValue(ObjectInstance.Model, ObjectInstance.ViewModel) as IEnumerable;
             List<object> sourceCollection = source.OfType<object>().ToList();
 
             // Delay the update to the observable collection so that we don't record dependencies on

@@ -28,7 +28,7 @@ namespace KnockoutCS.Library.Impl
 				// When the property is out of date, update it from the wrapped object.
 				_depProperty = new Dependent(delegate
 				{
-					object value = ClassProperty.GetObjectValue(ObjectInstance.WrappedObject);
+					object value = ClassProperty.GetObjectValue(ObjectInstance.Model, ObjectInstance.ViewModel);
                     object translatedValue = TranslateOutgoingValue(value);
 					bool changed = !Object.Equals(_value, translatedValue);
 					_value = translatedValue;
@@ -56,7 +56,7 @@ namespace KnockoutCS.Library.Impl
             if (NotificationGate.IsInbound)
             {
                 value = TranslateIncommingValue(value);
-                ClassProperty.SetObjectValue(ObjectInstance.WrappedObject, value);
+                ClassProperty.SetObjectValue(ObjectInstance.Model, ObjectInstance.ViewModel, value);
             }
 		}
 

@@ -22,7 +22,7 @@ namespace KnockoutCS.Library.Impl
 
         public override object TranslateIncommingValue(object value)
         {
-            return value == null ? null : ((IObjectInstance)value).WrappedObject;
+            return value == null ? null : ((IObjectInstance)value).ViewModel;
         }
 
         public override object TranslateOutgoingValue(object value)

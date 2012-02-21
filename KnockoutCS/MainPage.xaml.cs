@@ -14,10 +14,8 @@ namespace KnockoutCS
         private void MainPage_Loaded(object sender, RoutedEventArgs e)
         {
             dynamic model = KO.Observable(new Model());
-            DataContext = KO.ApplyBindings(new
+            DataContext = KO.ApplyBindings<Model>(model, new
             {
-                FirstName = KO.Computed(() => model.FirstName, value => model.FirstName = value),
-                LastName = KO.Computed(() => model.LastName, value => model.LastName = value),
                 FullName = KO.Computed(() => model.FirstName + " " + model.LastName)
             });
         }

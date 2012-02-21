@@ -18,13 +18,14 @@ using System.Reflection;
 
 namespace KnockoutCS.Library.Impl
 {
-    public class ObjectInstance<TWrappedObjectType> : ICustomTypeProvider, IObjectInstance, INotifyPropertyChanged, IDataErrorInfo, IEditableObject
+    public class ObjectInstance<TModel, TViewModel> : ICustomTypeProvider, IObjectInstance, INotifyPropertyChanged, IDataErrorInfo, IEditableObject
     {
         // Wrap the class and all of its property definitions.
-		private static ClassInstance _classInstance = new ClassInstance(typeof(TWrappedObjectType), typeof(ObjectInstance<TWrappedObjectType>));
+		private static ClassInstance _classInstance = new ClassInstance(typeof(TModel), typeof(TViewModel), typeof(ObjectInstance<TModel, TViewModel>));
 
-        // Wrap the object instance.
-        private object _wrappedObject;
+        // Wrap the model and view model.
+        private dynamic _model;
+        private object _viewModel;
 
         // The dispatcher for the view that I'm attached to.
         private Dispatcher _dispatcher;
@@ -32,9 +33,10 @@ namespace KnockoutCS.Library.Impl
 		// Wrap all properties.
         private Dictionary<ClassProperty, ObjectProperty> _properties = new Dictionary<ClassProperty, ObjectProperty>();
 
-		public ObjectInstance(object wrappedObject, Dispatcher dispatcher)
+		public ObjectInstance(dynamic model, object viewModel, Dispatcher dispatcher)
 		{
-			_wrappedObject = wrappedObject;
+            _model = model;
+			_viewModel = viewModel;
             _dispatcher = dispatcher;
 		}
 
@@ -43,9 +45,14 @@ namespace KnockoutCS.Library.Impl
             get { return _classInstance; }
         }
 
-        public object WrappedObject
+        public dynamic Model
         {
-            get { return _wrappedObject; }
+            get { return _model; }
+        }
+
+        public object ViewModel
+        {
+            get { return _viewModel; }
         }
 
         public Dispatcher Dispatcher
@@ -66,7 +73,7 @@ namespace KnockoutCS.Library.Impl
 
         public override string ToString()
         {
-            return _wrappedObject.ToString();
+            return _viewModel.ToString();
         }
 
         public override bool Equals(object obj)
@@ -77,13 +84,13 @@ namespace KnockoutCS.Library.Impl
                 return true;
             if (obj.GetType() != this.GetType())
                 return false;
-            ObjectInstance<TWrappedObjectType> that = (ObjectInstance<TWrappedObjectType>)obj;
-            return Object.Equals(this._wrappedObject, that._wrappedObject);
+            ObjectInstance<TModel, TViewModel> that = (ObjectInstance<TModel, TViewModel>)obj;
+            return Object.Equals(this._viewModel, that._viewModel);
         }
 
         public override int GetHashCode()
         {
-            return _wrappedObject.GetHashCode();
+            return _viewModel.GetHashCode();
         }
 
         public void FirePropertyChanged(string name)
@@ -98,7 +105,7 @@ namespace KnockoutCS.Library.Impl
 		{
 			get
 			{
-				IDataErrorInfo wrappedObject = _wrappedObject as IDataErrorInfo;
+				IDataErrorInfo wrappedObject = _viewModel as IDataErrorInfo;
 				return wrappedObject != null ? wrappedObject.Error : null;
 			}
 		}
@@ -107,7 +114,7 @@ namespace KnockoutCS.Library.Impl
 		{
 			get
 			{
-				IDataErrorInfo wrappedObject = _wrappedObject as IDataErrorInfo;
+				IDataErrorInfo wrappedObject = _viewModel as IDataErrorInfo;
 				return wrappedObject != null ? wrappedObject[columnName] : null;
 			}
 		}
@@ -116,21 +123,21 @@ namespace KnockoutCS.Library.Impl
 
         public void BeginEdit()
         {
-            IEditableObject wrappedObject = _wrappedObject as IEditableObject;
+            IEditableObject wrappedObject = _viewModel as IEditableObject;
             if (wrappedObject != null)
                 wrappedObject.BeginEdit();
         }
 
         public void CancelEdit()
         {
-            IEditableObject wrappedObject = _wrappedObject as IEditableObject;
+            IEditableObject wrappedObject = _viewModel as IEditableObject;
             if (wrappedObject != null)
                 wrappedObject.CancelEdit();
         }
 
         public void EndEdit()
         {
-            IEditableObject wrappedObject = _wrappedObject as IEditableObject;
+            IEditableObject wrappedObject = _viewModel as IEditableObject;
             if (wrappedObject != null)
                 wrappedObject.EndEdit();
         }
@@ -139,7 +146,7 @@ namespace KnockoutCS.Library.Impl
 
         public Type GetCustomType()
         {
-            return new ClassInstance(typeof(TWrappedObjectType), typeof(ObjectInstance<TWrappedObjectType>));
+            return new ClassInstance(typeof(TModel), typeof(TViewModel), typeof(ObjectInstance<TModel, TViewModel>));
         }
     }
 }
