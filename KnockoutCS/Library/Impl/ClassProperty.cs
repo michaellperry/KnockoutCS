@@ -100,10 +100,14 @@ namespace KnockoutCS.Library.Impl
             {
                 return model.Get(_propertyInfo.Name);
             }
-            else
+            else if (_propertyInfo.PropertyType == typeof(Monad))
             {
                 Monad monad = (Monad)_propertyInfo.GetValue(viewModel, null);
                 return monad.Get();
+            }
+            else
+            {
+                return _propertyInfo.GetValue(viewModel, null);
             }
         }
 
@@ -113,10 +117,14 @@ namespace KnockoutCS.Library.Impl
             {
                 model.Set(_propertyInfo.Name, value);
             }
-            else
+            else if (_propertyInfo.PropertyType == typeof(Monad))
             {
                 Monad monad = (Monad)_propertyInfo.GetValue(viewModel, null);
                 monad.Set(value);
+            }
+            else
+            {
+                _propertyInfo.SetValue(viewModel, value, null);
             }
 		}
 
