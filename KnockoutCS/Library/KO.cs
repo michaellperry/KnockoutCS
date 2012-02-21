@@ -13,15 +13,25 @@ namespace KnockoutCS.Library
             return new Observable<T>(model);
         }
 
-        public static object ApplyBindings(object viewModelTemplate)
+        public static object Computed(Func<object> computation)
         {
-            if (viewModelTemplate == null)
+            return new Monad(computation, null);
+        }
+
+        public static object Computed(Func<object> computation, Action<object> inverse)
+        {
+            return new Monad(computation, inverse);
+        }
+
+        public static object ApplyBindings(object viewModel)
+        {
+            if (viewModel == null)
                 return null;
             IObjectInstance root = (IObjectInstance)typeof(ObjectInstance<>)
-                .MakeGenericType(viewModelTemplate.GetType())
+                .MakeGenericType(viewModel.GetType())
                 .GetConstructors()
                 .Single()
-                .Invoke(new object[] { viewModelTemplate, Deployment.Current.Dispatcher });
+                .Invoke(new object[] { viewModel, Deployment.Current.Dispatcher });
             return root;
         }
     }

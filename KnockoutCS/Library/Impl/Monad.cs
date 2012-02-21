@@ -23,25 +23,5 @@ namespace KnockoutCS.Library.Impl
             if (_setter != null)
                 _setter(value);
         }
-
-        public static Monad operator +(Monad l, Monad r)
-        {
-            return new Monad(
-                delegate
-                {
-                    return (string)(l.Get()) + (string)(r.Get());
-                },
-                null);
-        }
-
-        public static Monad operator +(Monad l, string c)
-        {
-            return new Monad(
-                delegate
-                {
-                    return (string)(l.Get()) + c;
-                },
-                null);
-        }
     }
 }

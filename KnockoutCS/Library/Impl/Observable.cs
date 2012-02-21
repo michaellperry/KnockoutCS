@@ -20,18 +20,18 @@ namespace KnockoutCS.Library.Impl
             Independent independent = GetIndependentByPropertyName(binder.Name);
             PropertyInfo property = GetPropertyByPropertyName(binder.Name);
 
-            result = new Monad(
-                delegate
-                {
-                    independent.OnGet();
-                    return property.GetValue(_model, null);
-                },
-                delegate(object value)
-                {
-                    independent.OnSet();
-                    property.SetValue(_model, value, null);
-                }
-            );
+            independent.OnGet();
+            result = property.GetValue(_model, null);
+            return true;
+        }
+
+        public override bool TrySetMember(SetMemberBinder binder, object value)
+        {
+            Independent independent = GetIndependentByPropertyName(binder.Name);
+            PropertyInfo property = GetPropertyByPropertyName(binder.Name);
+
+            independent.OnSet();
+            property.SetValue(_model, value, null);
             return true;
         }
 
