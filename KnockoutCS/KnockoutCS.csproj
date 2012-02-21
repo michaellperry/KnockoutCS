@@ -76,8 +76,6 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Library1\BaseViewModel.cs" />
-    <Compile Include="Library1\Computed.cs" />
     <Compile Include="Library\Impl\ClassInstance.cs" />
     <Compile Include="Library\Impl\ClassProperty.cs" />
     <Compile Include="Library\Impl\CollectionItem.cs" />
@@ -96,11 +94,9 @@
     <Compile Include="Library\Impl\ObjectPropertyCollectionObject.cs" />
     <Compile Include="Library\Impl\Observable.cs" />
     <Compile Include="Library\KO.cs" />
-    <Compile Include="Library1\Observable.cs" />
     <Compile Include="MainPage.xaml.cs">
       <DependentUpon>MainPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="API1\MainViewModel.cs" />
     <Compile Include="Model.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
