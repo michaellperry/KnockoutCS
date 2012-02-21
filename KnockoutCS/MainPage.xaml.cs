@@ -18,6 +18,8 @@ namespace KnockoutCS
             {
                 FullName = KO.Computed(() => model.FirstName + " " + model.LastName)
             });
+            // Equally valid:
+            // DataContext = KO.ApplyBindings<Model>(model, new ViewModel(model));
         }
     }
 }
