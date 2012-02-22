@@ -26,7 +26,8 @@ namespace KnockoutCS.Library.Impl
         {
 			typeof(object),
             typeof(string),
-            typeof(ICommand)
+            typeof(ICommand),
+            typeof(Monad)
         };
 
         private static readonly Type[] Bindables = new Type[]
@@ -98,7 +99,9 @@ namespace KnockoutCS.Library.Impl
         {
             if (_isModelProperty)
             {
-                return model.Get(_propertyInfo.Name);
+                return _propertyInfo.GetValue(model, null);
+                // TODO: Use this technique when the model is dynamic.
+                //return model.Get(_propertyInfo.Name);
             }
             else if (_propertyInfo.PropertyType == typeof(Monad))
             {
@@ -115,7 +118,9 @@ namespace KnockoutCS.Library.Impl
 		{
             if (_isModelProperty)
             {
-                model.Set(_propertyInfo.Name, value);
+                _propertyInfo.SetValue(model, value, null);
+                // TODO: Use this technique when the model is dynamic.
+                //model.Set(_propertyInfo.Name, value);
             }
             else if (_propertyInfo.PropertyType == typeof(Monad))
             {

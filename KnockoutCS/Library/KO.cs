@@ -1,29 +1,34 @@
 ﻿using System;
 using System.Linq;
 using System.Windows;
-using System.Windows.Data;
 using KnockoutCS.Library.Impl;
 
 namespace KnockoutCS.Library
 {
     public static class KO
     {
-        public static dynamic Observable<T>(T model)
+        public static TModel NewObservable<TModel>()
         {
-            return new Observable<T>(model);
+            ObservableTypeBuilder typeBuilder = new ObservableTypeBuilder(typeof(TModel));
+            return (TModel)Activator.CreateInstance(typeBuilder.CreateType());
         }
 
-        public static object Computed(Func<object> computation)
+        public static dynamic Observable<TModel>(TModel model)
+        {
+            return new Observable<TModel>(model);
+        }
+
+        public static Monad Computed(Func<object> computation)
         {
             return new Monad(computation, null);
         }
 
-        public static object Computed(Func<object> computation, Action<object> inverse)
+        public static Monad Computed(Func<object> computation, Action<object> inverse)
         {
             return new Monad(computation, inverse);
         }
 
-        public static object ApplyBindings<TModel>(dynamic model, object viewModel)
+        public static object ApplyBindings<TModel>(TModel model, object viewModel)
         {
             if (viewModel == null)
                 return null;

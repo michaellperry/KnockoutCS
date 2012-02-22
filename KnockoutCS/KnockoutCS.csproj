@@ -95,6 +95,7 @@
     <Compile Include="Library\Impl\Observable.cs" />
     <Compile Include="Library\Impl\ObservableProperty.cs" />
     <Compile Include="Library\KO.cs" />
+    <Compile Include="Library\Impl\ObservableTypeBuilder.cs" />
     <Compile Include="MainPage.xaml.cs">
       <DependentUpon>MainPage.xaml</DependentUpon>
     </Compile>

@@ -13,13 +13,13 @@ namespace KnockoutCS
 
         private void MainPage_Loaded(object sender, RoutedEventArgs e)
         {
-            dynamic model = KO.Observable(new Model());
-            DataContext = KO.ApplyBindings<Model>(model, new
+            Model model = KO.NewObservable<Model>();
+            DataContext = KO.ApplyBindings(model, new
             {
                 FullName = KO.Computed(() => model.FirstName + " " + model.LastName)
             });
             // Equally valid:
-            // DataContext = KO.ApplyBindings<Model>(model, new ViewModel(model));
+            // DataContext = KO.ApplyBindings(model, new ViewModel(model));
         }
     }
 }

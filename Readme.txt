@@ -2,10 +2,10 @@
 
   private void MainPage_Loaded(object sender, RoutedEventArgs e)
   {
-    dynamic model = KO.Observable(new Model());
-    DataContext = KO.ApplyBindings<Model>(model, new
+    Model model = KO.NewObservable<Model>();
+    DataContext = KO.ApplyBindings(model, new
     {
-      FullName = KO.Computed(() => model.FirstName + " " + model.LastName)
+        FullName = KO.Computed(() => model.FirstName + " " + model.LastName)
     });
   }
 
@@ -13,8 +13,8 @@ Where the model is simply:
 
   public class Model
   {
-    public string FirstName { get; set; }
-    public string LastName { get; set; }
+    public virtual string FirstName { get; set; }
+    public virtual string LastName { get; set; }
   }
 
 This will data bind to all properties of the model plus the computed properties
