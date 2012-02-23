@@ -28,16 +28,9 @@ namespace KnockoutCS
             return new Monad(computation, inverse);
         }
 
-        public static object ApplyBindings<TModel>(TModel model, object viewModel)
+        public static object ApplyBindings<TModel, TViewModel>(TModel model, TViewModel viewModel)
         {
-            if (viewModel == null)
-                return null;
-            IObjectInstance root = (IObjectInstance)typeof(ObjectInstance<,>)
-                .MakeGenericType(typeof(TModel), viewModel.GetType())
-                .GetConstructors()
-                .Single()
-                .Invoke(new object[] { model, viewModel, Deployment.Current.Dispatcher });
-            return root;
+            return new ObjectInstance<TModel, TViewModel>(model, viewModel, Deployment.Current.Dispatcher);
         }
     }
 }

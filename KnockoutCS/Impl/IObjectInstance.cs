@@ -17,7 +17,7 @@ namespace KnockoutCS.Impl
     public interface IObjectInstance
     {
         ClassInstance ClassInstance { get; }
-        dynamic Model { get; }
+        object Model { get; }
         object ViewModel { get; }
         Dispatcher Dispatcher { get; }
         ObjectProperty LookupProperty(ClassProperty classProperty);

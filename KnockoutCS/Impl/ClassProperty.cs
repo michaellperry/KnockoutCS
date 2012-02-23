@@ -95,7 +95,7 @@ namespace KnockoutCS.Impl
             return _makeObjectProperty(objectInstance);
         }
 
-        public object GetObjectValue(dynamic model, object viewModel)
+        public object GetObjectValue(object model, object viewModel)
         {
             if (_isModelProperty)
             {
@@ -114,7 +114,7 @@ namespace KnockoutCS.Impl
             }
         }
 
-		public void SetObjectValue(dynamic model, object viewModel, object value)
+		public void SetObjectValue(object model, object viewModel, object value)
 		{
             if (_isModelProperty)
             {

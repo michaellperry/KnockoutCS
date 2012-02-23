@@ -24,7 +24,7 @@ namespace KnockoutCS.Impl
 		private static ClassInstance _classInstance = new ClassInstance(typeof(TModel), typeof(TViewModel), typeof(ObjectInstance<TModel, TViewModel>));
 
         // Wrap the model and view model.
-        private dynamic _model;
+        private object _model;
         private object _viewModel;
 
         // The dispatcher for the view that I'm attached to.
@@ -33,7 +33,7 @@ namespace KnockoutCS.Impl
 		// Wrap all properties.
         private Dictionary<ClassProperty, ObjectProperty> _properties = new Dictionary<ClassProperty, ObjectProperty>();
 
-		public ObjectInstance(dynamic model, object viewModel, Dispatcher dispatcher)
+		public ObjectInstance(object model, object viewModel, Dispatcher dispatcher)
 		{
             _model = model;
 			_viewModel = viewModel;
@@ -45,7 +45,7 @@ namespace KnockoutCS.Impl
             get { return _classInstance; }
         }
 
-        public dynamic Model
+        public object Model
         {
             get { return _model; }
         }
