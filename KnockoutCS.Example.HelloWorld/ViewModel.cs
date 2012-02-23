@@ -3,9 +3,9 @@ namespace KnockoutCS.Example.HelloWorld
 {
     public class ViewModel
     {
-        private dynamic _model;
+        private Model _model;
 
-        public ViewModel(dynamic model)
+        public ViewModel(Model model)
         {
             _model = model;
         }

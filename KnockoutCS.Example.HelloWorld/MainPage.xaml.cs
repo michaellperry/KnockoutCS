@@ -14,12 +14,12 @@ namespace KnockoutCS.Example.HelloWorld
         private void MainPage_Loaded(object sender, RoutedEventArgs e)
         {
             Model model = KO.NewObservable<Model>();
-            DataContext = KO.ApplyBindings(model, new
-            {
-                FullName = KO.Computed(() => model.FirstName + " " + model.LastName)
-            });
+            //DataContext = KO.ApplyBindings(model, new
+            //{
+            //    FullName = KO.Computed(() => model.FirstName + " " + model.LastName)
+            //});
             // Equally valid:
-            // DataContext = KO.ApplyBindings(model, new ViewModel(model));
+            DataContext = KO.ApplyBindings(model, new ViewModel(model));
         }
     }
 }
