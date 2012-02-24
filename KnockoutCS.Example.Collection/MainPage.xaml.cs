@@ -1,7 +1,6 @@
-﻿using System.Windows;
+﻿using System;
+using System.Windows;
 using System.Windows.Controls;
-using UpdateControls.XAML;
-using System;
 
 namespace KnockoutCS.Example.Collection
 {
@@ -17,13 +16,12 @@ namespace KnockoutCS.Example.Collection
             Parent parent = KO.NewObservable<Parent>();
             DataContext = KO.ApplyBindings(parent, new
             {
-                NewChild = MakeCommand.
-                    Do(() =>
-                    {
-                        Child child = KO.NewObservable<Child>();
-                        child.Name = String.Format("Child {0}", parent.Children.Count + 1);
-                        parent.Children.Add(child);
-                    })
+                NewChild = KO.Command(() =>
+                {
+                    Child child = KO.NewObservable<Child>();
+                    child.Name = String.Format("Child {0}", parent.Children.Count + 1);
+                    parent.Children.Add(child);
+                })
             });
         }
     }

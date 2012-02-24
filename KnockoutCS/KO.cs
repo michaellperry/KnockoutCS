@@ -2,6 +2,8 @@
 using System.Linq;
 using System.Windows;
 using KnockoutCS.Impl;
+using System.Windows.Input;
+using UpdateControls.XAML;
 
 namespace KnockoutCS
 {
@@ -25,6 +27,11 @@ namespace KnockoutCS
         public static Monad Computed(Func<object> computation, Action<object> inverse)
         {
             return new Monad(computation, inverse);
+        }
+
+        public static ICommand Command(Action execute)
+        {
+            return MakeCommand.Do(execute);
         }
 
         public static object ApplyBindings<TModel, TViewModel>(TModel model, TViewModel viewModel)
