@@ -14,8 +14,7 @@ namespace KnockoutCS.Example.Collection
 
         private void MainPage_Loaded(object sender, RoutedEventArgs e)
         {
-            //Parent parent = KO.NewObservable<Parent>();
-            Parent parent = new Parent__Observable();
+            Parent parent = KO.NewObservable<Parent>();
             DataContext = KO.ApplyBindings(parent, new
             {
                 NewChild = MakeCommand.

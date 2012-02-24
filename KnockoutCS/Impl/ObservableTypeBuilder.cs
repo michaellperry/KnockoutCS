@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Reflection;
 using System.Reflection.Emit;
 using UpdateControls;
+using UpdateControls.Collections;
 
 namespace KnockoutCS.Impl
 {
@@ -52,28 +53,53 @@ namespace KnockoutCS.Impl
             PropertyInfo[] properties = modelType.GetProperties();
             foreach (PropertyInfo property in properties)
             {
-                FieldBuilder independentField = typeBuilder.DefineField(
-                    "_ind" + property.Name,
-                    typeof(Independent),
-                    FieldAttributes.Private);
+                if (!IsList(property))
+                {
+                    FieldBuilder independentField = typeBuilder.DefineField(
+                        "_ind" + property.Name,
+                        typeof(Independent),
+                        FieldAttributes.Private);
 
-                PropertyBuilder propertyBuilder = typeBuilder.DefineProperty(
-                    property.Name,
-                    PropertyAttributes.HasDefault,
-                    property.PropertyType,
-                    null);
-                propertyBuilder.SetGetMethod(CreateGetMethod(typeBuilder, property, independentField));
-                propertyBuilder.SetSetMethod(CreateSetMethod(typeBuilder, property, independentField));
+                    PropertyBuilder propertyBuilder = typeBuilder.DefineProperty(
+                        property.Name,
+                        PropertyAttributes.HasDefault,
+                        property.PropertyType,
+                        null);
+                    propertyBuilder.SetGetMethod(CreateGetMethod(typeBuilder, property, independentField));
+                    propertyBuilder.SetSetMethod(CreateSetMethod(typeBuilder, property, independentField));
 
-                constructorGenerator.Emit(OpCodes.Ldarg_0);
-                constructorGenerator.Emit(OpCodes.Newobj, Independent_Ctor);
-                constructorGenerator.Emit(OpCodes.Stfld, independentField);
+                    constructorGenerator.Emit(OpCodes.Ldarg_0);
+                    constructorGenerator.Emit(OpCodes.Newobj, Independent_Ctor);
+                    constructorGenerator.Emit(OpCodes.Stfld, independentField);
+                }
             }
 
             constructorGenerator.Emit(OpCodes.Ldarg_0);
             constructorGenerator.Emit(OpCodes.Call, modelType.GetConstructor(new Type[0]));
+
+            foreach (PropertyInfo property in properties)
+            {
+                if (IsList(property))
+                {
+                    Type childType = property.PropertyType.GetGenericArguments()[0];
+                    Type independentListType = typeof(IndependentList<>).MakeGenericType(childType);
+
+                    constructorGenerator.Emit(OpCodes.Ldarg_0);
+                    constructorGenerator.Emit(OpCodes.Newobj, independentListType.GetConstructor(new Type[0]));
+                    constructorGenerator.Emit(OpCodes.Call, property.GetSetMethod());
+                }
+            }
+
+
             constructorGenerator.Emit(OpCodes.Ret);
             return typeBuilder;
+        }
+
+        private static bool IsList(PropertyInfo property)
+        {
+            return
+                property.PropertyType.IsGenericType &&
+                property.PropertyType.GetGenericTypeDefinition() == typeof(IList<>);
         }
 
         private static MethodBuilder CreateGetMethod(TypeBuilder typeBuilder, PropertyInfo property, FieldInfo independentField)

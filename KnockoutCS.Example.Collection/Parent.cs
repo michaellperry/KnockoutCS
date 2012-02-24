@@ -4,6 +4,6 @@ namespace KnockoutCS.Example.Collection
 {
     public class Parent
     {
-        public IList<Child> Children { get; protected set; }
+        public IList<Child> Children { get; set; }
     }
 }
