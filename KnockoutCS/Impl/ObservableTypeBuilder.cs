@@ -1,28 +1,23 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Reflection;
 using System.Reflection.Emit;
 using UpdateControls;
 
 namespace KnockoutCS.Impl
 {
-    public class ObservableTypeBuilder
+    public static class ObservableTypeBuilder
     {
         private static readonly ConstructorInfo Independent_Ctor = typeof(Independent).GetConstructor(new Type[0]);
         private static readonly MethodInfo Independent_OnGet = typeof(Independent).GetMethod("OnGet");
         private static readonly MethodInfo Independent_OnSet = typeof(Independent).GetMethod("OnSet");
 
         private static ModuleBuilder _moduleBuilder;
+        private static Dictionary<Type, TypeBuilder> _typeBuilderByModelType = new Dictionary<Type, TypeBuilder>();
 
-        private Type _modelType;
-
-        public ObservableTypeBuilder(Type modelType)
+        public static Type CreateType(Type modelType)
         {
-            _modelType = modelType;
-        }
-
-        public Type CreateType()
-        {
-            return CreateObservableType().CreateType();
+            return GetTypeBuilder(modelType).CreateType();
         }
 
         private static ModuleBuilder GetModuleBuilder()
@@ -34,11 +29,18 @@ namespace KnockoutCS.Impl
             return _moduleBuilder;
         }
 
-        private TypeBuilder CreateObservableType()
+        private static TypeBuilder GetTypeBuilder(Type modelType)
         {
+            TypeBuilder typeBuilder;
+            if (_typeBuilderByModelType.TryGetValue(modelType, out typeBuilder))
+                return typeBuilder;
+
             ModuleBuilder moduleBuilder = GetModuleBuilder();
-            TypeBuilder typeBuilder = moduleBuilder.DefineType(_modelType.FullName + "__Observable", TypeAttributes.Class | TypeAttributes.Public);
-            typeBuilder.SetParent(_modelType);
+            typeBuilder = moduleBuilder.DefineType(
+                modelType.FullName + "__Observable",
+                TypeAttributes.Class | TypeAttributes.Public);
+            typeBuilder.SetParent(modelType);
+            _typeBuilderByModelType.Add(modelType, typeBuilder);
 
             ConstructorBuilder constructorBuilder = typeBuilder.DefineConstructor(
                 MethodAttributes.Public | MethodAttributes.HideBySig | MethodAttributes.SpecialName | MethodAttributes.RTSpecialName,
@@ -47,7 +49,7 @@ namespace KnockoutCS.Impl
 
             ILGenerator constructorGenerator = constructorBuilder.GetILGenerator();
 
-            PropertyInfo[] properties = _modelType.GetProperties();
+            PropertyInfo[] properties = modelType.GetProperties();
             foreach (PropertyInfo property in properties)
             {
                 FieldBuilder independentField = typeBuilder.DefineField(
@@ -69,12 +71,12 @@ namespace KnockoutCS.Impl
             }
 
             constructorGenerator.Emit(OpCodes.Ldarg_0);
-            constructorGenerator.Emit(OpCodes.Call, _modelType.GetConstructor(new Type[0]));
+            constructorGenerator.Emit(OpCodes.Call, modelType.GetConstructor(new Type[0]));
             constructorGenerator.Emit(OpCodes.Ret);
             return typeBuilder;
         }
 
-        private MethodBuilder CreateGetMethod(TypeBuilder typeBuilder, PropertyInfo property, FieldInfo independentField)
+        private static MethodBuilder CreateGetMethod(TypeBuilder typeBuilder, PropertyInfo property, FieldInfo independentField)
         {
             MethodBuilder getMethod = typeBuilder.DefineMethod(
                 "get_" + property.Name,
@@ -92,7 +94,7 @@ namespace KnockoutCS.Impl
             return getMethod;
         }
 
-        private MethodBuilder CreateSetMethod(TypeBuilder typeBuilder, PropertyInfo property, FieldInfo independentField)
+        private static MethodBuilder CreateSetMethod(TypeBuilder typeBuilder, PropertyInfo property, FieldInfo independentField)
         {
             MethodBuilder setMethod = typeBuilder.DefineMethod(
                 "set_" + property.Name,

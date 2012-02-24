@@ -41,9 +41,9 @@ namespace KnockoutCS.Impl
         protected object WrapObject(object value)
         {
             return typeof(ObjectInstance<,>)
-				.MakeGenericType(value.GetType())
-				.GetConstructor(new Type[] { typeof(object), typeof(Dispatcher) })
-				.Invoke(new object[] { value, ObjectInstance.Dispatcher });
+				.MakeGenericType(typeof(object), value.GetType())
+                .GetConstructor(new Type[] { typeof(object), typeof(object), typeof(Dispatcher) })
+				.Invoke(new object[] { null, value, ObjectInstance.Dispatcher });
 		}
 	}
 }

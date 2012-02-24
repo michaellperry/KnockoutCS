@@ -10,6 +10,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KnockoutCS", "KnockoutCS\Kn
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KnockoutCS.Example.HelloWorld", "KnockoutCS.Example.HelloWorld\KnockoutCS.Example.HelloWorld.csproj", "{7BA2F1D8-4A29-44B6-96A0-469B079EBC02}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KnockoutCS.Example.Collection", "KnockoutCS.Example.Collection\KnockoutCS.Example.Collection.csproj", "{B5717D99-B48E-469C-9765-2DC20B3094B9}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -24,6 +26,10 @@ Global
 		{7BA2F1D8-4A29-44B6-96A0-469B079EBC02}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7BA2F1D8-4A29-44B6-96A0-469B079EBC02}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7BA2F1D8-4A29-44B6-96A0-469B079EBC02}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B5717D99-B48E-469C-9765-2DC20B3094B9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B5717D99-B48E-469C-9765-2DC20B3094B9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B5717D99-B48E-469C-9765-2DC20B3094B9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B5717D99-B48E-469C-9765-2DC20B3094B9}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

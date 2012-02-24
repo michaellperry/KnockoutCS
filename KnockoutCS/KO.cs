@@ -9,8 +9,7 @@ namespace KnockoutCS
     {
         public static TModel NewObservable<TModel>()
         {
-            ObservableTypeBuilder typeBuilder = new ObservableTypeBuilder(typeof(TModel));
-            return (TModel)Activator.CreateInstance(typeBuilder.CreateType());
+            return (TModel)Activator.CreateInstance(ObservableTypeBuilder.CreateType(typeof(TModel)));
         }
 
         public static dynamic Observable<TModel>(TModel model)
