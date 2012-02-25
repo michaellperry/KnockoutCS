@@ -55,6 +55,9 @@ namespace KnockoutCS.Impl
             {
                 if (!IsList(property))
                 {
+                    if (!property.GetGetMethod().IsVirtual)
+                        throw new InvalidOperationException(String.Format("Add the virtual keyword to the property {0}.{1}.", modelType.FullName, property.Name));
+
                     FieldBuilder independentField = typeBuilder.DefineField(
                         "_ind" + property.Name,
                         typeof(Independent),

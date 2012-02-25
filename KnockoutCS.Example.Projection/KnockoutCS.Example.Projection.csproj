@@ -5,18 +5,32 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProductVersion>8.0.50727</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{AC422E47-B798-4EA6-9C80-E7E05CAFC3F1}</ProjectGuid>
+    <ProjectGuid>{F987D146-EE82-42D7-8152-A35605DBA8C8}</ProjectGuid>
     <ProjectTypeGuids>{A1591282-1198-4647-A2B1-27E5FF5F6F3B};{fae04ec0-301f-11d3-bf4b-00c04f79efbc}</ProjectTypeGuids>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>KnockoutCS</RootNamespace>
-    <AssemblyName>KnockoutCS</AssemblyName>
+    <RootNamespace>KnockoutCS.Example.Projection</RootNamespace>
+    <AssemblyName>KnockoutCS.Example.Projection</AssemblyName>
     <TargetFrameworkIdentifier>Silverlight</TargetFrameworkIdentifier>
     <TargetFrameworkVersion>v5.0</TargetFrameworkVersion>
     <SilverlightVersion>$(TargetFrameworkVersion)</SilverlightVersion>
-    <SilverlightApplication>false</SilverlightApplication>
+    <SilverlightApplication>true</SilverlightApplication>
+    <SupportedCultures>
+    </SupportedCultures>
+    <XapOutputs>true</XapOutputs>
+    <GenerateSilverlightManifest>true</GenerateSilverlightManifest>
+    <XapFilename>KnockoutCS.Example.Projection.xap</XapFilename>
+    <SilverlightManifestTemplate>Properties\AppManifest.xml</SilverlightManifestTemplate>
+    <SilverlightAppEntry>KnockoutCS.Example.Projection.App</SilverlightAppEntry>
+    <TestPageFileName>KnockoutCS.Example.ProjectionTestPage.html</TestPageFileName>
+    <CreateTestPage>true</CreateTestPage>
     <ValidateXaml>true</ValidateXaml>
+    <EnableOutOfBrowser>false</EnableOutOfBrowser>
+    <OutOfBrowserSettingsFile>Properties\OutOfBrowserSettings.xml</OutOfBrowserSettingsFile>
+    <UsePlatformExtensions>false</UsePlatformExtensions>
     <ThrowErrorsInValidation>true</ThrowErrorsInValidation>
+    <LinkedServerProject>
+    </LinkedServerProject>
   </PropertyGroup>
   <!-- This property group is only here to support building this project using the 
        MSBuild 3.5 toolset. In order to work correctly with this older toolset, it needs 
@@ -46,53 +60,51 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Microsoft.CSharp, Version=5.0.5.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
     <Reference Include="mscorlib" />
     <Reference Include="System.Windows" />
     <Reference Include="system" />
     <Reference Include="System.Core" />
-    <Reference Include="System.Xml" />
     <Reference Include="System.Net" />
+    <Reference Include="System.Xml" />
     <Reference Include="System.Windows.Browser" />
     <Reference Include="UpdateControls">
       <HintPath>..\packages\UpdateControls.2.2.1.0\lib\sl5\UpdateControls.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Impl\ClassInstance.cs" />
-    <Compile Include="Impl\ClassProperty.cs" />
-    <Compile Include="Impl\CollectionItem.cs" />
-    <Compile Include="Impl\DelegatedPropertyInfo.cs" />
-    <Compile Include="Impl\DelegatedType.cs" />
-    <Compile Include="Impl\IMonad.cs" />
-    <Compile Include="Impl\IObjectInstance.cs" />
-    <Compile Include="Impl\Monad.cs" />
-    <Compile Include="Impl\NotificationGate.cs" />
-    <Compile Include="Impl\ObjectInstance.cs" />
-    <Compile Include="Impl\ObjectProperty.cs" />
-    <Compile Include="Impl\ObjectPropertyAtom.cs" />
-    <Compile Include="Impl\ObjectPropertyAtomNative.cs" />
-    <Compile Include="Impl\ObjectPropertyAtomObject.cs" />
-    <Compile Include="Impl\ObjectPropertyCollection.cs" />
-    <Compile Include="Impl\ObjectPropertyCollectionNative.cs" />
-    <Compile Include="Impl\ObjectPropertyCollectionObject.cs" />
-    <Compile Include="Impl\Observable.cs" />
-    <Compile Include="Impl\ObservableProperty.cs" />
-    <Compile Include="Impl\ObservableTypeBuilder.cs" />
-    <Compile Include="KO.cs" />
+    <Compile Include="App.xaml.cs">
+      <DependentUpon>App.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="MainPage.xaml.cs">
+      <DependentUpon>MainPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Person.cs" />
+    <Compile Include="PersonSummary.cs" />
+    <Compile Include="PhoneBook.cs" />
+    <Compile Include="PhoneBookSelection.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ApplicationDefinition Include="App.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </ApplicationDefinition>
+    <Page Include="MainPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+  </ItemGroup>
+  <ItemGroup>
     <None Include="packages.config" />
+    <None Include="Properties\AppManifest.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\KnockoutCS\KnockoutCS.csproj">
+      <Project>{AC422E47-B798-4EA6-9C80-E7E05CAFC3F1}</Project>
+      <Name>KnockoutCS</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Silverlight\$(SilverlightVersion)\Microsoft.Silverlight.CSharp.targets" />
-  <ProjectExtensions>
-    <VisualStudio>
-      <FlavorProperties GUID="{A1591282-1198-4647-A2B1-27E5FF5F6F3B}">
-        <SilverlightProjectProperties />
-      </FlavorProperties>
-    </VisualStudio>
-  </ProjectExtensions>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">
@@ -100,4 +112,11 @@
   <Target Name="AfterBuild">
   </Target>
   -->
+  <ProjectExtensions>
+    <VisualStudio>
+      <FlavorProperties GUID="{A1591282-1198-4647-A2B1-27E5FF5F6F3B}">
+        <SilverlightProjectProperties />
+      </FlavorProperties>
+    </VisualStudio>
+  </ProjectExtensions>
 </Project>

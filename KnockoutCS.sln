@@ -12,6 +12,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KnockoutCS.Example.HelloWor
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KnockoutCS.Example.Collection", "KnockoutCS.Example.Collection\KnockoutCS.Example.Collection.csproj", "{B5717D99-B48E-469C-9765-2DC20B3094B9}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KnockoutCS.Example.Projection", "KnockoutCS.Example.Projection\KnockoutCS.Example.Projection.csproj", "{F987D146-EE82-42D7-8152-A35605DBA8C8}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -30,6 +32,10 @@ Global
 		{B5717D99-B48E-469C-9765-2DC20B3094B9}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B5717D99-B48E-469C-9765-2DC20B3094B9}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B5717D99-B48E-469C-9765-2DC20B3094B9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F987D146-EE82-42D7-8152-A35605DBA8C8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F987D146-EE82-42D7-8152-A35605DBA8C8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F987D146-EE82-42D7-8152-A35605DBA8C8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F987D146-EE82-42D7-8152-A35605DBA8C8}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

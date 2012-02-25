@@ -19,14 +19,14 @@ namespace KnockoutCS
             return new Observable<TModel>(model);
         }
 
-        public static Monad Computed(Func<object> computation)
+        public static Monad<T> Computed<T>(Func<T> computation)
         {
-            return new Monad(computation, null);
+            return new Monad<T>(computation, null);
         }
 
-        public static Monad Computed(Func<object> computation, Action<object> inverse)
+        public static Monad<T> Computed<T>(Func<T> computation, Action<T> inverse)
         {
-            return new Monad(computation, inverse);
+            return new Monad<T>(computation, inverse);
         }
 
         public static ICommand Command(Action execute)

@@ -26,8 +26,7 @@ namespace KnockoutCS.Impl
         {
 			typeof(object),
             typeof(string),
-            typeof(ICommand),
-            typeof(Monad)
+            typeof(ICommand)
         };
 
         private static readonly Type[] Bindables = new Type[]
@@ -43,14 +42,14 @@ namespace KnockoutCS.Impl
         private Func<IObjectInstance, ObjectProperty> _makeObjectProperty;
 
         public ClassProperty(bool isModelProperty, PropertyInfo property, Type objectInstanceType)
-            : base(property, GetValueType(property.PropertyType))
+            : base(property, GetValueType(ExtractFromMonad(property.PropertyType)))
         {
             _isModelProperty = isModelProperty;
             _propertyInfo = property;
             _objectInstanceType = objectInstanceType;
 
             // Determine which type of object property to create.
-            Type propertyType = property.PropertyType;
+            Type propertyType = ExtractFromMonad(property.PropertyType);
             if (IsPrimitive(propertyType))
             {
                 _makeObjectProperty = objectInstance =>
@@ -97,20 +96,27 @@ namespace KnockoutCS.Impl
 
         public object GetObjectValue(object model, object viewModel)
         {
-            if (_isModelProperty)
+            try
             {
-                return _propertyInfo.GetValue(model, null);
-                // TODO: Use this technique when the model is dynamic.
-                //return model.Get(_propertyInfo.Name);
+                if (_isModelProperty)
+                {
+                    return _propertyInfo.GetValue(model, null);
+                    // TODO: Use this technique when the model is dynamic.
+                    //return model.Get(_propertyInfo.Name);
+                }
+                else if (IsMonad(_propertyInfo.PropertyType))
+                {
+                    IMonad monad = (IMonad)_propertyInfo.GetValue(viewModel, null);
+                    return monad.GetObject();
+                }
+                else
+                {
+                    return _propertyInfo.GetValue(viewModel, null);
+                }
             }
-            else if (_propertyInfo.PropertyType == typeof(Monad))
+            catch (MethodAccessException ex)
             {
-                Monad monad = (Monad)_propertyInfo.GetValue(viewModel, null);
-                return monad.Get();
-            }
-            else
-            {
-                return _propertyInfo.GetValue(viewModel, null);
+                throw new InvalidOperationException(@"Open Properties\AssemblyInfo.cs and add the line [assembly: InternalsVisibleTo(""KnockoutCS"")].");
             }
         }
 
@@ -122,10 +128,10 @@ namespace KnockoutCS.Impl
                 // TODO: Use this technique when the model is dynamic.
                 //model.Set(_propertyInfo.Name, value);
             }
-            else if (_propertyInfo.PropertyType == typeof(Monad))
+            else if (IsMonad(_propertyInfo.PropertyType))
             {
-                Monad monad = (Monad)_propertyInfo.GetValue(viewModel, null);
-                monad.Set(value);
+                IMonad monad = (IMonad)_propertyInfo.GetValue(viewModel, null);
+                monad.SetObject(value);
             }
             else
             {
@@ -162,5 +168,18 @@ namespace KnockoutCS.Impl
                 // Don't wrap objects that are already bindable
                 Bindables.Any(b => b.IsAssignableFrom(type));
 		}
+
+        private static bool IsMonad(Type propertyType)
+        {
+            return propertyType.IsGenericType && propertyType.GetGenericTypeDefinition() == typeof(Monad<>);
+        }
+
+        private static Type ExtractFromMonad(Type propertyType)
+        {
+            if (IsMonad(propertyType))
+                return propertyType.GetGenericArguments()[0];
+            else
+                return propertyType;
+        }
     }
 }
