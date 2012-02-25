@@ -1,5 +1,5 @@
 
-namespace KnockoutCS.Example.Projection
+namespace KnockoutCS.Example.Selection
 {
     public class PhoneBookSelection
     {

@@ -5,12 +5,12 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProductVersion>8.0.50727</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{F987D146-EE82-42D7-8152-A35605DBA8C8}</ProjectGuid>
+    <ProjectGuid>{F603E3DC-C5A8-4963-A1D5-EB55BEE5A63A}</ProjectGuid>
     <ProjectTypeGuids>{A1591282-1198-4647-A2B1-27E5FF5F6F3B};{fae04ec0-301f-11d3-bf4b-00c04f79efbc}</ProjectTypeGuids>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>KnockoutCS.Example.Projection</RootNamespace>
-    <AssemblyName>KnockoutCS.Example.Projection</AssemblyName>
+    <RootNamespace>KnockoutCS.Example.Selection</RootNamespace>
+    <AssemblyName>KnockoutCS.Example.Selection</AssemblyName>
     <TargetFrameworkIdentifier>Silverlight</TargetFrameworkIdentifier>
     <TargetFrameworkVersion>v5.0</TargetFrameworkVersion>
     <SilverlightVersion>$(TargetFrameworkVersion)</SilverlightVersion>
@@ -19,10 +19,10 @@
     </SupportedCultures>
     <XapOutputs>true</XapOutputs>
     <GenerateSilverlightManifest>true</GenerateSilverlightManifest>
-    <XapFilename>KnockoutCS.Example.Projection.xap</XapFilename>
+    <XapFilename>KnockoutCS.Example.Selection.xap</XapFilename>
     <SilverlightManifestTemplate>Properties\AppManifest.xml</SilverlightManifestTemplate>
-    <SilverlightAppEntry>KnockoutCS.Example.Projection.App</SilverlightAppEntry>
-    <TestPageFileName>KnockoutCS.Example.ProjectionTestPage.html</TestPageFileName>
+    <SilverlightAppEntry>KnockoutCS.Example.Selection.App</SilverlightAppEntry>
+    <TestPageFileName>KnockoutCS.Example.SelectionTestPage.html</TestPageFileName>
     <CreateTestPage>true</CreateTestPage>
     <ValidateXaml>true</ValidateXaml>
     <EnableOutOfBrowser>false</EnableOutOfBrowser>
@@ -81,7 +81,9 @@
     <Compile Include="Person.cs" />
     <Compile Include="PersonSummary.cs" />
     <Compile Include="PhoneBook.cs" />
+    <Compile Include="PhoneBookSelection.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <ApplicationDefinition Include="App.xaml">
