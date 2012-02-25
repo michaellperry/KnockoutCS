@@ -80,6 +80,7 @@
     <Compile Include="Impl\ObservableProperty.cs" />
     <Compile Include="Impl\ObservableTypeBuilder.cs" />
     <Compile Include="KO.cs" />
+    <Compile Include="KOIdentityAttribute.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

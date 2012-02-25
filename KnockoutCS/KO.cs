@@ -1,8 +1,7 @@
 ﻿using System;
-using System.Linq;
 using System.Windows;
-using KnockoutCS.Impl;
 using System.Windows.Input;
+using KnockoutCS.Impl;
 using UpdateControls.XAML;
 
 namespace KnockoutCS

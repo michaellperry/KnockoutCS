@@ -1,3 +1,4 @@
+using System;
 
 namespace KnockoutCS.Example.Projection
 {
@@ -10,6 +11,7 @@ namespace KnockoutCS.Example.Projection
             _person = person;
         }
 
+        [KOIdentity]
         public Person Person
         {
             get { return _person; }
@@ -18,21 +20,6 @@ namespace KnockoutCS.Example.Projection
         public string Name
         {
             get { return _person.FirstName + " " + _person.LastName; }
-        }
-
-        public override bool Equals(object obj)
-        {
-            if (this == obj)
-                return true;
-            PersonSummary that = obj as PersonSummary;
-            if (that == null)
-                return false;
-            return _person.Equals(that._person);
-        }
-
-        public override int GetHashCode()
-        {
-            return _person.GetHashCode();
         }
 
         public static PersonSummary FromPerson(Person person)

@@ -22,6 +22,9 @@ namespace KnockoutCS.Impl
     {
         // Wrap the class and all of its property definitions.
 		private static ClassInstance _classInstance = new ClassInstance(typeof(TModel), typeof(TViewModel), typeof(ObjectInstance<TModel, TViewModel>));
+        private static List<PropertyInfo> _viewModelIdentityProperties = typeof(TViewModel).GetProperties()
+            .Where(property => property.GetCustomAttributes(typeof(KOIdentityAttribute), true).Any())
+            .ToList();
 
         // Wrap the model and view model.
         private object _model;
@@ -85,12 +88,33 @@ namespace KnockoutCS.Impl
             if (obj.GetType() != this.GetType())
                 return false;
             ObjectInstance<TModel, TViewModel> that = (ObjectInstance<TModel, TViewModel>)obj;
-            return Object.Equals(this._viewModel, that._viewModel);
+            if (_viewModelIdentityProperties.Any())
+            {
+                var thisIdentity = _viewModelIdentityProperties.Select(property => property.GetValue(this._viewModel, null)).ToArray();
+                var thatIdentity = _viewModelIdentityProperties.Select(property => property.GetValue(that._viewModel, null)).ToArray();
+                for (int i = 0; i < thisIdentity.Length; i++)
+                {
+                    if (!Object.Equals(thisIdentity[i], thatIdentity[i]))
+                        return false;
+                }
+                return true;
+            }
+            else
+                return Object.Equals(this._viewModel, that._viewModel);
         }
 
         public override int GetHashCode()
         {
-            return _viewModel.GetHashCode();
+            if (_viewModelIdentityProperties.Any())
+            {
+                var thisIdentity = _viewModelIdentityProperties.Select(property => property.GetValue(this._viewModel, null)).ToArray();
+                int hashCode = 0;
+                for (int i = 0; i < thisIdentity.Length; i++)
+                    hashCode = hashCode * 37 + thisIdentity[i].GetHashCode();
+                return hashCode;
+            }
+            else
+                return _viewModel.GetHashCode();
         }
 
         public void FirePropertyChanged(string name)
