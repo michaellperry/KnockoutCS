@@ -34,6 +34,11 @@ namespace KnockoutCS
             return MakeCommand.Do(execute);
         }
 
+        public static ICommand Command(Action execute, Func<bool> condition)
+        {
+            return MakeCommand.When(condition).Do(execute);
+        }
+
         public static object ApplyBindings<TModel, TViewModel>(TModel model, TViewModel viewModel)
         {
             return new ObjectInstance<TModel, TViewModel>(model, viewModel, Deployment.Current.Dispatcher);

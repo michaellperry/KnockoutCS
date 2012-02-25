@@ -28,23 +28,27 @@ namespace KnockoutCS.Example.Projection
             {
                 People = KO.Computed(() =>
                     from person in phoneBook.People
-                    select new PersonSummary(person)
+                    select PersonSummary.FromPerson(person)
                 ),
                 SelectedPerson = KO.Computed(
-                    () => selection.SelectedPerson == null
-                        ? null
-                        : new PersonSummary(selection.SelectedPerson),
-                    value => selection.SelectedPerson = value == null
-                        ? null
-                        : value.Person
+                    () => PersonSummary.FromPerson(selection.SelectedPerson),
+                    value => selection.SelectedPerson = PersonSummary.ToPerson(value)
                 ),
                 NewPerson = KO.Command(() =>
                 {
                     Person newPerson = KO.NewObservable<Person>();
-                    newPerson.FirstName = "Michael";
-                    newPerson.LastName = "Perry";
+                    newPerson.FirstName = "New";
+                    newPerson.LastName = "Person";
                     phoneBook.People.Add(newPerson);
+                    selection.SelectedPerson = newPerson;
                 }),
+                DeletePerson = KO.Command(() =>
+                {
+                    phoneBook.People.Remove(selection.SelectedPerson);
+                    selection.SelectedPerson = null;
+                },
+                    () => selection.SelectedPerson != null
+                ),
                 PersonDetail = KO.Computed(() => selection.SelectedPerson)
             });
         }

@@ -34,5 +34,19 @@ namespace KnockoutCS.Example.Projection
         {
             return _person.GetHashCode();
         }
+
+        public static PersonSummary FromPerson(Person person)
+        {
+            return person == null
+                ? null
+                : new PersonSummary(person);
+        }
+
+        public static Person ToPerson(PersonSummary personSummary)
+        {
+            return personSummary == null
+                ? null
+                : personSummary.Person;
+        }
     }
 }
