@@ -16,6 +16,11 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KnockoutCS.Example.Projecti
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KnockoutCS.Example.Selection", "KnockoutCS.Example.Selection\KnockoutCS.Example.Selection.csproj", "{F603E3DC-C5A8-4963-A1D5-EB55BEE5A63A}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "NuGet", "NuGet", "{7CB191CF-7BB4-4A0B-8FE3-2E3B4B62E1FC}"
+	ProjectSection(SolutionItems) = preProject
+		NuGet\knockoutcs.nuspec = NuGet\knockoutcs.nuspec
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU

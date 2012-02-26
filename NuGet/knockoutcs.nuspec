@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
+  <metadata>
+    <id>KnockoutCS</id>
+    <version>1.0.0.0</version>
+    <authors>Michael L Perry</authors>
+    <owners>Michael L Perry</owners>
+    <description>Dependency tracking for Silverlight in the spirit of KnockoutJS.</description>
+    <licenseUrl>http://knockoutcs.com/license</licenseUrl>
+    <projectUrl>https://github.com/michaellperry/KnockoutCS</projectUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <language>en-US</language>
+    <tags>mvvm viewmodel databinding silverlight</tags>
+    <dependencies>
+      <dependency id="UpdateControls"/>
+    </dependencies>
+  </metadata>
+</package>

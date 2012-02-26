@@ -117,4 +117,7 @@
       </FlavorProperties>
     </VisualStudio>
   </ProjectExtensions>
+  <PropertyGroup>
+    <PostBuildEvent>xcopy /y $(TargetDir)*.xap $(SolutionDir)XAP\</PostBuildEvent>
+  </PropertyGroup>
 </Project>
