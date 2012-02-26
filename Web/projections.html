@@ -1,7 +1,7 @@
 ﻿<!DOCTYPE html>
 <html>
 <head>
-    <title>KnockoutCS - Collections</title>
+    <title>KnockoutCS - Projections</title>
     <script type="text/javascript" src="scripts/shCore.js"></script>
     <script type="text/javascript" src="scripts/shBrushCSharp.js"></script>
     <script type="text/javascript" src="scripts/shBrushXml.js"></script>
@@ -23,11 +23,11 @@
 <li><a href="license.html">License</a></li>
 </ul>
 </div>
-<h1>Collections</h1>
+<h1>Projections</h1>
 
 <div id="silverlightControlHost">
     <object data="data:application/x-silverlight-2," type="application/x-silverlight-2" width="240" height="180">
-		<param name="source" value="xap/KnockoutCS.Example.Collection.xap"/>
+		<param name="source" value="xap/KnockoutCS.Example.Projection.xap"/>
 		<param name="background" value="white" />
 		<param name="minRuntimeVersion" value="5.0.61118.0" />
 		<param name="autoUpgrade" value="true" />
@@ -37,41 +37,54 @@
 	</object>
 </div>
 
-<p>Declare collections as properties of type IList&lt;&gt;. These properties do not have to be virtual.</p>
-<pre class="brush: csharp">
-public class Parent
-{
-    public IList&lt;Child&gt; Children { get; set; }
-}
-</pre>
-
-<p>Call KO.Command() to create a command property. Add children to the collection.</p>
+<p>Sometimes you want computed properties on your child objects. When you need that, you can project each child into a new object. Write a linq statement to select a projection for each child.</p>
 <pre class="brush: csharp">
 private void MainPage_Loaded(object sender, RoutedEventArgs e)
 {
-    Parent parent = KO.NewObservable&lt;Parent&gt;();
-    DataContext = KO.ApplyBindings(parent, new
+    PhoneBook phoneBook = KO.NewObservable&lt;PhoneBook&gt;();
+    DataContext = KO.ApplyBindings(phoneBook, new
     {
-        NewChild = KO.Command(() =&gt;
-        {
-            Child child = KO.NewObservable&lt;Child&gt;();
-            child.Name = String.Format("Child {0}", parent.Children.Count+1);
-            parent.Children.Add(child);
-        })
+        People = KO.Computed(() =&gt;
+            from person in phoneBook.People
+            select new PersonSummary(person)
+        )
     });
 }
 </pre>
 
-<p>Data bind the collection to the ItemsSource property. Data bind the command to the Command property of a button.</p>
+<p>Inside the projection class, expose the original object as a property. Mark this property with the [KOIdentity] attribute so that it is used to identify the projections.</p>
+<pre class="brush: csharp">
+public class PersonSummary
+{
+    private readonly Person _person;
+ 
+    public PersonSummary(Person person)
+    {
+        _person = person;
+    }
+ 
+    [KOIdentity]
+    public Person Person
+    {
+        get { return _person; }
+    }
+ 
+    public string Name
+    {
+        get { return _person.FirstName + " " + _person.LastName; }
+    }
+}
+</pre>
+
+<p>Data bind to properties of the projection in the ItemTemplate.</p>
 <pre class="brush: xml">
-&lt;ListBox ItemsSource="{Binding Children}"&gt;
+&lt;ListBox ItemsSource="{Binding People}"&gt;
     &lt;ListBox.ItemTemplate&gt;
         &lt;DataTemplate&gt;
             &lt;TextBlock Text="{Binding Name}"/&gt;
         &lt;/DataTemplate&gt;
     &lt;/ListBox.ItemTemplate&gt;
 &lt;/ListBox&gt;
-&lt;Button Command="{Binding NewChild}"&gt;New Child&lt;/Button&gt;
 </pre>
 </div>
 </body>
