@@ -23,11 +23,11 @@
 <li><a href="license.html">License</a></li>
 </ul>
 </div>
-<h1>Hello World</h1>
+<h1>Collections</h1>
 
 <div id="silverlightControlHost">
-    <object data="data:application/x-silverlight-2," type="application/x-silverlight-2" width="240" height="90">
-		<param name="source" value="xap/KnockoutCS.Example.HelloWorld.xap"/>
+    <object data="data:application/x-silverlight-2," type="application/x-silverlight-2" width="240" height="180">
+		<param name="source" value="xap/KnockoutCS.Example.Collection.xap"/>
 		<param name="background" value="white" />
 		<param name="minRuntimeVersion" value="5.0.61118.0" />
 		<param name="autoUpgrade" value="true" />
@@ -37,43 +37,41 @@
 	</object>
 </div>
 
-<p>Declare models as POCO classes. Just be sure to mark all of the properties as virtual.</p>
+<p>Declare collections as properties of type IList&lt;&gt;. These properties do not have to be virtual.</p>
 <pre class="brush: csharp">
-public class Model
+public class Parent
 {
-    public virtual string FirstName { get; set; }
-    public virtual string LastName { get; set; }
+    public IList&lt;Child&gt; Children { get; set; }
 }
 </pre>
 
-<p>Call KO.NewObservable&lt;&gt;() to create a new observable instance of your model.</p>
+<p>Call KO.Command() to create a command property. Add children to the collection.</p>
 <pre class="brush: csharp">
 private void MainPage_Loaded(object sender, RoutedEventArgs e)
 {
-    Model model = KO.NewObservable&lt;Model&gt;();
-}
-</pre>
-
-<p>Call KO.ApplyBindings() to data bind your model to the view. Add computed properties with KO.Computed().</p>
-<pre class="brush: csharp">
-private void MainPage_Loaded(object sender, RoutedEventArgs e)
-{
-    Model model = KO.NewObservable&lt;Model&gt;();
-    DataContext = KO.ApplyBindings(model, new
+    Parent parent = KO.NewObservable&lt;Parent&gt;();
+    DataContext = KO.ApplyBindings(parent, new
     {
-        FullName = KO.Computed(() =&gt; model.FirstName + " " + model.LastName)
+        NewChild = KO.Command(() =&gt;
+        {
+            Child child = KO.NewObservable&lt;Child&gt;();
+            child.Name = String.Format("Child {0}", parent.Children.Count+1);
+            parent.Children.Add(child);
+        })
     });
 }
 </pre>
-<p>Give KnockoutCS permission to see this anonymous type.</p>
-<pre class="brush: csharp">
-[assembly: InternalsVisibleTo("KnockoutCS")]
-</pre>
-<p>Use the familiar XAML Binding syntax. Bind to model properties or computed properties.</p>
+
+<p>Data bind the collection to the ItemsSource property. Data bind the command to the Command property of a button.</p>
 <pre class="brush: xml">
-&lt;TextBox Text="{Binding FirstName, Mode=TwoWay}"/&gt;
-&lt;TextBox Text="{Binding LastName, Mode=TwoWay}"/&gt;
-&lt;TextBlock Text="{Binding FullName}"/&gt;
+&lt;ListBox ItemsSource="{Binding Children}"&gt;
+    &lt;ListBox.ItemTemplate&gt;
+        &lt;DataTemplate&gt;
+            &lt;TextBlock Text="{Binding Name}"/&gt;
+        &lt;/DataTemplate&gt;
+    &lt;/ListBox.ItemTemplate&gt;
+&lt;/ListBox&gt;
+&lt;Button Command="{Binding NewChild}"&gt;New Child&lt;/Button&gt;
 </pre>
 </div>
 </body>
