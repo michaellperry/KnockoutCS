@@ -1,0 +1,137 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <title>KnockoutCS - Selection</title>
+    <script type="text/javascript" src="scripts/shCore.js"></script>
+    <script type="text/javascript" src="scripts/shBrushCSharp.js"></script>
+    <script type="text/javascript" src="scripts/shBrushXml.js"></script>
+    <link type="text/css" rel="Stylesheet" href="styles/style.css" />
+    <link type="text/css" rel="Stylesheet" href="styles/layout.css" />
+    <link type="text/css" rel="Stylesheet" href="styles/shCore.css" />
+    <link type="text/css" rel="Stylesheet" href="styles/shThemeRDark.css" />
+</head>
+<body>
+<div class="page">
+<div class="menu">
+<ul>
+<li><a href="index.html">Home</a></li>
+<li><a href="hello-world.html">Hello World</a></li>
+<li><a href="collections.html">Collections</a></li>
+<li><a href="projections.html">Projections</a></li>
+<li><a href="selection.html">Selection</a></li>
+<li><a href="testing.html">Testing</a></li>
+<li><a href="license.html">License</a></li>
+</ul>
+</div>
+<h1>Selection</h1>
+
+<div id="silverlightControlHost">
+    <object data="data:application/x-silverlight-2," type="application/x-silverlight-2" width="240" height="180">
+		<param name="source" value="xap/KnockoutCS.Example.Selection.xap"/>
+		<param name="background" value="white" />
+		<param name="minRuntimeVersion" value="5.0.61118.0" />
+		<param name="autoUpgrade" value="true" />
+		<a href="http://go.microsoft.com/fwlink/?LinkID=149156&v=5.0.61118.0" style="text-decoration:none">
+ 			<img src="http://go.microsoft.com/fwlink/?LinkId=161376" alt="Get Microsoft Silverlight" style="border-style:none"/>
+		</a>
+	</object>
+</div>
+
+<p>When the user selects an item from a list, we want to store that selection so we can react to it. Create an observable object to hold the selected child.</p>
+<pre class="brush: csharp">
+public class PhoneBookSelection
+{
+    public virtual Person SelectedPerson { get; set; }
+}
+</pre>
+<pre class="brush: csharp">
+private void MainPage_Loaded(object sender, RoutedEventArgs e)
+{
+    // ...
+    PhoneBookSelection selection = KO.NewObservable&lt;PhoneBookSelection&gt;();
+    // ...
+}
+</pre>
+
+<p>Define a computed property to return the projection of the selected child. A computed property can also have an inverse, to set the selected child when the projection is selected.</p>
+<pre class="brush: csharp">
+private void MainPage_Loaded(object sender, RoutedEventArgs e)
+{
+    // ...
+    DataContext = KO.ApplyBindings(phoneBook, new
+    {
+        // ...
+        SelectedPerson = KO.Computed(
+            () =&gt; PersonSummary.FromPerson(selection.SelectedPerson),
+            value =&gt; selection.SelectedPerson = PersonSummary.ToPerson(value)
+        )
+    });
+}
+</pre>
+
+<p>Where FromPerson and ToPerson are a couple of helper methods that handle nulls.</p>
+<pre class="brush: csharp">
+public static PersonSummary FromPerson(Person person)
+{
+    return person == null
+        ? null
+        : new PersonSummary(person);
+}
+ 
+public static Person ToPerson(PersonSummary personSummary)
+{
+    return personSummary == null
+        ? null
+        : personSummary.Person;
+}
+</pre>
+
+<p>Commands can have conditions. The button is only enabled when the condition is true.</p>
+<pre class="brush: csharp">
+private void MainPage_Loaded(object sender, RoutedEventArgs e)
+{
+    // ...
+    DataContext = KO.ApplyBindings(phoneBook, new
+    {
+        // ...
+        DeletePerson = KO.Command(() =&gt;
+        {
+            phoneBook.People.Remove(selection.SelectedPerson);
+            selection.SelectedPerson = null;
+        }, () =&gt; selection.SelectedPerson != null
+        )
+    });
+}
+</pre>
+
+<p>Define another computed property to return the actual child, not its projection. This will allow the user to set properties on the child itself.</p>
+<pre class="brush: csharp">
+private void MainPage_Loaded(object sender, RoutedEventArgs e)
+{
+    // ...
+    DataContext = KO.ApplyBindings(phoneBook, new
+    {
+        // ...
+        PersonDetail = KO.Computed(() =&gt; selection.SelectedPerson)
+    });
+}
+</pre>
+
+<p>Data bind the collection to the ItemsSource property, and the selected projection to the SelectedItem property. Data bind properties of the selected child so that the user can edit them.</p>
+<pre class="brush: xml">
+&lt;ListBox  ItemsSource="{Binding People}" SelectedItem="{Binding SelectedPerson, Mode=TwoWay}"&gt;
+    &lt;ListBox.ItemTemplate&gt;
+        &lt;DataTemplate&gt;
+            &lt;TextBlock Text="{Binding Name}"/&gt;
+        &lt;/DataTemplate&gt;
+    &lt;/ListBox.ItemTemplate&gt;
+&lt;/ListBox&gt;
+&lt;TextBox Text="{Binding PersonDetail.FirstName, Mode=TwoWay}"/&gt;
+&lt;TextBox Text="{Binding PersonDetail.LastName, Mode=TwoWay}"/&gt;
+</pre>
+</div>
+</body>
+<script type="text/javascript">
+    SyntaxHighlighter.all();
+</script>
+</html>
