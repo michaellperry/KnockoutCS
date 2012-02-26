@@ -1,0 +1,104 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <title>KnockoutCS - Testing</title>
+    <script type="text/javascript" src="scripts/shCore.js"></script>
+    <script type="text/javascript" src="scripts/shBrushCSharp.js"></script>
+    <script type="text/javascript" src="scripts/shBrushXml.js"></script>
+    <link type="text/css" rel="Stylesheet" href="styles/style.css" />
+    <link type="text/css" rel="Stylesheet" href="styles/layout.css" />
+    <link type="text/css" rel="Stylesheet" href="styles/shCore.css" />
+    <link type="text/css" rel="Stylesheet" href="styles/shThemeRDark.css" />
+</head>
+<body>
+<div class="page">
+<div class="menu">
+<ul>
+<li><a href="index.html">Home</a></li>
+<li><a href="hello-world.html">Hello World</a></li>
+<li><a href="collections.html">Collections</a></li>
+<li><a href="projections.html">Projections</a></li>
+<li><a href="selection.html">Selection</a></li>
+<li><a href="testing.html">Testing</a></li>
+<li><a href="license.html">License</a></li>
+</ul>
+</div>
+<h1>Testing</h1>
+
+<p>If you want to unit test your view models – and I recommend that you do – then you will want to define then as separate classes rather than anonymous types. Just define every computed property as a property of your view model, and put the computation in the get method.</p>
+<pre class="brush: csharp">
+public class ViewModel
+{
+    private Model _model;
+ 
+    public ViewModel(Model model)
+    {
+        _model = model;
+    }
+ 
+    public string FullName
+    {
+        get { return _model.FirstName + " " + _model.LastName; }
+    }
+}
+</pre>
+
+<p>Commands are just properties of type ICommand.</p>
+<pre class="brush: csharp">
+public class PhoneBookViewModel
+{
+    private readonly PhoneBook _phoneBook;
+    private readonly PhoneBookSelection _selection;
+ 
+    public PhoneBookViewModel(
+        PhoneBook phoneBook,
+        PhoneBookSelection selection)
+    {
+        _phoneBook = phoneBook;
+        _selection = selection;
+    }
+ 
+    public IEnumerable&lt;PersonSummary&gt; People
+    {
+        get
+        {
+            return
+                from person in _phoneBook.People
+                select new PersonSummary(person);
+        }
+    }
+ 
+    public PersonSummary SelectedPerson
+    {
+        get { return PersonSummary.FromPerson(_selection.SelectedPerson); }
+        set { _selection.SelectedPerson = PersonSummary.ToPerson(value); }
+    }
+ 
+    public ICommand NewPerson
+    {
+        get
+        {
+            return KO.Command(() =&gt;
+            {
+                Person newPerson = KO.NewObservable&lt;Person&gt;();
+                newPerson.FirstName = "New";
+                newPerson.LastName = "Person";
+                _phoneBook.People.Add(newPerson);
+                _selection.SelectedPerson = newPerson;
+            });
+        }
+    }
+}
+</pre>
+
+<p>Create the view model when you ApplyBindings.</p>
+<pre class="brush: csharp">
+DataContext = KO.ApplyBindings(phoneBook,
+    new PhoneBookViewModel(phoneBook, selection));
+</pre>
+</div>
+</body>
+<script type="text/javascript">
+    SyntaxHighlighter.all();
+</script>
+</html>
