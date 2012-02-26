@@ -1,0 +1,54 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <title>KnockoutCS</title>
+    <script type="text/javascript" src="scripts/shCore.js"></script>
+    <script type="text/javascript" src="scripts/shBrushCSharp.js"></script>
+    <script type="text/javascript" src="scripts/shBrushXml.js"></script>
+    <script type="text/javascript" src="scripts/shBrushPowerShell.js"></script>
+    <link type="text/css" rel="Stylesheet" href="styles/style.css" />
+    <link type="text/css" rel="Stylesheet" href="styles/layout.css" />
+    <link type="text/css" rel="Stylesheet" href="styles/shCore.css" />
+    <link type="text/css" rel="Stylesheet" href="styles/shThemeRDark.css" />
+</head>
+<body>
+<div class="page">
+<h1>KnockoutCS</h1>
+<p class="subhead">A dependency tracking library for Silverlight 5 in the spirit of <a href="http://knockoutjs.com">KnockoutJS</a>. Based on <a href="http://updatecontrols.net">Update Controls</a>.</p>
+<p>Create a POCO model.</p>
+<pre class="brush: csharp">
+public class Model
+{
+    public virtual string FirstName { get; set; }
+    public virtual string LastName { get; set; }
+}
+</pre>
+
+<p>Add computed fields.</p>
+<pre class="brush: csharp">
+private void MainPage_Loaded(object sender, RoutedEventArgs e)
+{
+    Model model = KO.NewObservable&lt;Model&gt;();
+    DataContext = KO.ApplyBindings(model, new
+    {
+        FullName = KO.Computed(() =&gt; model.FirstName + " " + model.LastName)
+    });
+}
+</pre>
+
+<p>Bind.</p>
+<pre class="brush: xml">
+&lt;TextBox Text="{Binding FirstName, Mode=TwoWay}"/&gt;
+&lt;TextBox Text="{Binding LastName, Mode=TwoWay}"/&gt;
+&lt;TextBlock Text="{Binding FullName}"/&gt;
+</pre>
+<p>To install KnockoutCS from <a href="https://nuget.org/packages/KnockoutCS">NuGet</a>, run the following command in the Package Manager Console</p>
+<pre class="brush: ps">
+PM&gt; Install-Package KnockoutCS
+</pre>
+</div>
+</body>
+<script type="text/javascript">
+    SyntaxHighlighter.all();
+</script>
+</html>
