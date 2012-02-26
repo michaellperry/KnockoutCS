@@ -10,6 +10,24 @@ body
     background-color: White;
 }
 
+.menu
+{
+    list-style: none;
+    font-size: 0.8em;
+    background-color: Blue;
+}
+
+.menu ul li a
+{
+    color: White;
+    text-decoration: none;
+}
+
+.menu ul li a:hover
+{
+    color: #DCDCDC;
+}
+
 h1
 {
     font-family: Trebuchet MS;

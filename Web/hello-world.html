@@ -1,11 +1,10 @@
 ﻿<!DOCTYPE html>
 <html>
 <head>
-    <title>KnockoutCS</title>
+    <title>KnockoutCS - Hello World</title>
     <script type="text/javascript" src="scripts/shCore.js"></script>
     <script type="text/javascript" src="scripts/shBrushCSharp.js"></script>
     <script type="text/javascript" src="scripts/shBrushXml.js"></script>
-    <script type="text/javascript" src="scripts/shBrushPowerShell.js"></script>
     <link type="text/css" rel="Stylesheet" href="styles/style.css" />
     <link type="text/css" rel="Stylesheet" href="styles/layout.css" />
     <link type="text/css" rel="Stylesheet" href="styles/shCore.css" />
@@ -24,9 +23,21 @@
 <li><a href="license.html">Projections</a></li>
 </ul>
 </div>
-<h1>KnockoutCS</h1>
-<p class="subhead">A dependency tracking library for Silverlight 5 in the spirit of <a href="http://knockoutjs.com">KnockoutJS</a>. Based on <a href="http://updatecontrols.net">Update Controls</a>.</p>
-<p>Create a POCO model.</p>
+<h1>Hello World</h1>
+
+<div id="silverlightControlHost">
+    <object data="data:application/x-silverlight-2," type="application/x-silverlight-2" width="240" height="90">
+		<param name="source" value="xap/KnockoutCS.Example.HelloWorld.xap"/>
+		<param name="background" value="white" />
+		<param name="minRuntimeVersion" value="5.0.61118.0" />
+		<param name="autoUpgrade" value="true" />
+		<a href="http://go.microsoft.com/fwlink/?LinkID=149156&v=5.0.61118.0" style="text-decoration:none">
+ 			<img src="http://go.microsoft.com/fwlink/?LinkId=161376" alt="Get Microsoft Silverlight" style="border-style:none"/>
+		</a>
+	</object>
+</div>
+
+<p>Declare models as POCO classes. Just be sure to mark all of the properties as virtual.</p>
 <pre class="brush: csharp">
 public class Model
 {
@@ -35,7 +46,15 @@ public class Model
 }
 </pre>
 
-<p>Add computed fields.</p>
+<p>Call KO.NewObservable&lt;&gt;() to create a new observable instance of your model.</p>
+<pre class="brush: csharp">
+private void MainPage_Loaded(object sender, RoutedEventArgs e)
+{
+    Model model = KO.NewObservable&lt;Model&gt;();
+}
+</pre>
+
+<p>Call KO.ApplyBindings() to data bind your model to the view. Add computed properties with KO.Computed().</p>
 <pre class="brush: csharp">
 private void MainPage_Loaded(object sender, RoutedEventArgs e)
 {
@@ -46,16 +65,15 @@ private void MainPage_Loaded(object sender, RoutedEventArgs e)
     });
 }
 </pre>
-
-<p>Bind.</p>
+<p>Give KnockoutCS permission to see this anonymous type.</p>
+<pre class="brush: csharp">
+[assembly: InternalsVisibleTo("KnockoutCS")]
+</pre>
+<p>Use the familiar XAML Binding syntax. Bind to model properties or computed properties.</p>
 <pre class="brush: xml">
 &lt;TextBox Text="{Binding FirstName, Mode=TwoWay}"/&gt;
 &lt;TextBox Text="{Binding LastName, Mode=TwoWay}"/&gt;
 &lt;TextBlock Text="{Binding FullName}"/&gt;
-</pre>
-<p>To install KnockoutCS from <a href="https://nuget.org/packages/KnockoutCS">NuGet</a>, run the following command in the Package Manager Console</p>
-<pre class="brush: ps">
-PM&gt; Install-Package KnockoutCS
 </pre>
 </div>
 </body>

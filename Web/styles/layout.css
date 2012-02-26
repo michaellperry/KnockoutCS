@@ -5,6 +5,26 @@ body
 .page
 {
     width: 800px;
-    margin: 20px auto;
-    padding: 20px;
+    margin: 20px auto 20px auto;
+    padding: 0px 20px;
+}
+
+.menu
+{
+    width: 840px;
+    margin: 0px -20px;
+    padding: 1px 0px;
+}
+
+.menu li
+{
+    display: inline;
+    padding: 0px 10px;
+}
+
+#silverlightControlHost
+{
+	border: 1px solid #2F4F4F;
+	width: 240px;
+	margin: 0 auto;
 }
