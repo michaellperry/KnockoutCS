@@ -76,11 +76,13 @@
     <Compile Include="Impl\ObjectPropertyCollection.cs" />
     <Compile Include="Impl\ObjectPropertyCollectionNative.cs" />
     <Compile Include="Impl\ObjectPropertyCollectionObject.cs" />
-    <Compile Include="Impl\Observable.cs" />
-    <Compile Include="Impl\ObservableProperty.cs" />
+    <Compile Include="Impl\DynamicObservable.cs" />
+    <Compile Include="Impl\DynamicObservableProperty.cs" />
     <Compile Include="Impl\ObservableTypeBuilder.cs" />
     <Compile Include="KO.cs" />
     <Compile Include="KOIdentityAttribute.cs" />
+    <Compile Include="Observable.cs" />
+    <Compile Include="ObservableList.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

@@ -4,14 +4,14 @@ using System.Reflection;
 
 namespace KnockoutCS.Impl
 {
-    public class Observable<T> : DynamicObject
+    public class DynamicObservable<T> : DynamicObject
     {
-        private Dictionary<string, ObservableProperty<T>> _propertyByName = new Dictionary<string, ObservableProperty<T>>();
+        private Dictionary<string, DynamicObservableProperty<T>> _propertyByName = new Dictionary<string, DynamicObservableProperty<T>>();
         
-        public Observable(T model)
+        public DynamicObservable(T model)
         {
             foreach (PropertyInfo property in model.GetType().GetProperties())
-                _propertyByName.Add(property.Name, new ObservableProperty<T>(model, property));
+                _propertyByName.Add(property.Name, new DynamicObservableProperty<T>(model, property));
         }
 
         public object Get(string propertyName)
@@ -26,7 +26,7 @@ namespace KnockoutCS.Impl
 
         public override bool TryGetMember(GetMemberBinder binder, out object result)
         {
-            ObservableProperty<T> property;
+            DynamicObservableProperty<T> property;
             if (_propertyByName.TryGetValue(binder.Name, out property))
             {
                 result = property.Get();
@@ -41,7 +41,7 @@ namespace KnockoutCS.Impl
 
         public override bool TrySetMember(SetMemberBinder binder, object value)
         {
-            ObservableProperty<T> property;
+            DynamicObservableProperty<T> property;
             if (_propertyByName.TryGetValue(binder.Name, out property))
             {
                 property.Set(value);

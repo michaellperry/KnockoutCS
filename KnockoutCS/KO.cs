@@ -13,9 +13,9 @@ namespace KnockoutCS
             return (TModel)Activator.CreateInstance(ObservableTypeBuilder.CreateType(typeof(TModel)));
         }
 
-        public static dynamic Observable<TModel>(TModel model)
+        public static dynamic DynamicObservable<TModel>(TModel model)
         {
-            return new Observable<TModel>(model);
+            return new DynamicObservable<TModel>(model);
         }
 
         public static Monad<T> Computed<T>(Func<T> computation)
