@@ -1,6 +1,6 @@
 ﻿
-Microsoft Visual Studio Solution File, Format Version 11.00
-# Visual Studio 2010
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2012
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{2FB2454C-88E5-406F-9872-D05857C2E478}"
 	ProjectSection(SolutionItems) = preProject
 		Readme.txt = Readme.txt
@@ -19,6 +19,13 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "NuGet", "NuGet", "{7CB191CF-7BB4-4A0B-8FE3-2E3B4B62E1FC}"
 	ProjectSection(SolutionItems) = preProject
 		NuGet\knockoutcs.nuspec = NuGet\knockoutcs.nuspec
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{B3991E15-17AE-431C-A0D0-66F6B9B4985E}"
+	ProjectSection(SolutionItems) = preProject
+		.nuget\NuGet.Config = .nuget\NuGet.Config
+		.nuget\NuGet.exe = .nuget\NuGet.exe
+		.nuget\NuGet.targets = .nuget\NuGet.targets
 	EndProjectSection
 EndProject
 Global
