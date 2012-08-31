@@ -3,6 +3,7 @@ using System.Windows;
 using System.Windows.Input;
 using KnockoutCS.Impl;
 using UpdateControls.XAML;
+using System.Linq;
 
 namespace KnockoutCS
 {
@@ -40,6 +41,16 @@ namespace KnockoutCS
 
         public static object ApplyBindings<TModel, TViewModel>(TModel model, TViewModel viewModel)
         {
+            // Make sure that we can access the assembly's property info.
+            try
+            {
+                var propertyInfo = typeof(TViewModel).GetProperties().FirstOrDefault();
+                propertyInfo.GetValue(viewModel, null);
+            }
+            catch (MethodAccessException ex)
+            {
+                throw new InvalidOperationException(@"Open Properties\AssemblyInfo.cs and add the line [assembly: InternalsVisibleTo(""KnockoutCS"")].");
+            }
             return new ObjectInstance<TModel, TViewModel>(model, viewModel, Deployment.Current.Dispatcher);
         }
     }
