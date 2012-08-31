@@ -44,8 +44,9 @@ namespace KnockoutCS
             // Make sure that we can access the assembly's property info.
             try
             {
-                var propertyInfo = typeof(TViewModel).GetProperties().FirstOrDefault();
-                propertyInfo.GetValue(viewModel, null);
+                var propertyInfo = typeof(TViewModel).GetProperties().FirstOrDefault(p => p.CanRead);
+                if (propertyInfo != null)
+                    propertyInfo.GetValue(viewModel, null);
             }
             catch (MethodAccessException ex)
             {
