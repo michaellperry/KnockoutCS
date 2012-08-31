@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
   <metadata>
     <id>KnockoutCS</id>
-    <version>1.0.0.1</version>
+    <version>1.0.0.2</version>
     <authors>Michael L Perry</authors>
     <owners>Michael L Perry</owners>
     <description>Dependency tracking for Silverlight in the spirit of KnockoutJS.</description>
