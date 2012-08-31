@@ -1,4 +1,6 @@
 NuGet/lib/
+NuGet/*.nupkg
+packages/
 
 #ignore thumbnails created by windows
 Thumbs.db
